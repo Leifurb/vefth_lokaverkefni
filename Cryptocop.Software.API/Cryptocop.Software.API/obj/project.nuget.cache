@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YdwvCbxE6lz3BSwOq/7UJ6YeFJAzAmRJYwoqPHrQZTP1u0Lxikv7mj7rpyJ0KrKT0bpu7xgg7Bues2OxkBS39w==",
+  "dgSpecHash": "DEIig8BOoAKYzcl/SE6po0rN5crTfJe1tM31u1M5eFm0Fh6FZHqxr90H2NyCEpJ++lpSbXx0L+EkcqUYB7fS/g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\leifu\\Desktop\\lokavefth\\Cryptocop.Software.API\\Cryptocop.Software.API\\Cryptocop.Software.API.csproj",
+  "projectFilePath": "C:\\Users\\leifu\\Desktop\\vefth_lokaverkefni\\Cryptocop.Software.API\\Cryptocop.Software.API\\Cryptocop.Software.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leifu\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\leifu\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.9\\microsoft.aspnetcore.authentication.jwtbearer.6.0.9.nupkg.sha512",

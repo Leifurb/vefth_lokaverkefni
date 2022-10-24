@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\leifu\\Desktop\\lokavefth\\Cryptocop.Software.API\\Cryptocop.Software.API.Models\\Cryptocop.Software.API.Models.csproj",
+      "projectUniqueName": "C:\\Users\\leifu\\Desktop\\vefth_lokaverkefni\\Cryptocop.Software.API\\Cryptocop.Software.API.Models\\Cryptocop.Software.API.Models.csproj",
       "projectName": "Cryptocop.Software.API.Models",
-      "projectPath": "C:\\Users\\leifu\\Desktop\\lokavefth\\Cryptocop.Software.API\\Cryptocop.Software.API.Models\\Cryptocop.Software.API.Models.csproj",
+      "projectPath": "C:\\Users\\leifu\\Desktop\\vefth_lokaverkefni\\Cryptocop.Software.API\\Cryptocop.Software.API.Models\\Cryptocop.Software.API.Models.csproj",
       "packagesPath": "C:\\Users\\leifu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\leifu\\Desktop\\lokavefth\\Cryptocop.Software.API\\Cryptocop.Software.API.Models\\obj\\",
+      "outputPath": "C:\\Users\\leifu\\Desktop\\vefth_lokaverkefni\\Cryptocop.Software.API\\Cryptocop.Software.API.Models\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\leifu\\AppData\\Roaming\\NuGet\\NuGet.Config",

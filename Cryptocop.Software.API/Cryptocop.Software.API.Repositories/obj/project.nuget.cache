@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Eue5TLUSncccq5x9c7wtqt3LigvKu4PJO1m1uMZqtPFXwbEJptaViqOBIvtN5nsSPK5QqLmiY4WVvk5qILprbw==",
+  "dgSpecHash": "CFRCNK8n/l/wQNLkRtiJrb1CUtuW2Ysjg7+HKNYmFbywH1d7H4NlC3FZBSG1jzL4nyhkihBl02+QF1qIHKlI/A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\leifu\\Desktop\\lokavefth\\Cryptocop.Software.API\\Cryptocop.Software.API.Repositories\\Cryptocop.Software.API.Repositories.csproj",
+  "projectFilePath": "C:\\Users\\leifu\\Desktop\\vefth_lokaverkefni\\Cryptocop.Software.API\\Cryptocop.Software.API.Repositories\\Cryptocop.Software.API.Repositories.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leifu\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.9\\microsoft.aspnetcore.cryptography.internal.6.0.9.nupkg.sha512",
     "C:\\Users\\leifu\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.9\\microsoft.aspnetcore.cryptography.keyderivation.6.0.9.nupkg.sha512",

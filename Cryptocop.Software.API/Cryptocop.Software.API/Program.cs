@@ -2,10 +2,28 @@ using System.Text.Json.Serialization;
 using Cryptocop.Software.API.Services.Implementations;
 using Cryptocop.Software.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Cryptocop.Software.API.Repositories;
+
+using Cryptocop.Software.API.Repositories.Interfaces;
+using Cryptocop.Software.API.Repositories.Implementations;
+
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<CryptocopDbContext>(options =>
+{
+    options.UseNpgsql(
+    builder.Configuration.GetConnectionString(
+        "CryptocopConnectionString"
+    ),
+    b => b.MigrationsAssembly("Cryptocop.Software.API")
+    );
+});
+
 
 builder.Services.AddScoped<IQueueService, QueueService>();
+
+
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
