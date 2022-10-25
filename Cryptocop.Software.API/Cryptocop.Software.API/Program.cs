@@ -27,7 +27,7 @@ builder.Services.AddTransient<ITokenService>((c) =>
         jwtConfig.GetValue<string>("audience"),
         jwtConfig.GetValue<string>("expirationInMinutes")));
 
-//builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
 //builder.Services.AddTransient<IAddressService, AddressService>();
 //builder.Services.AddTransient<ICryptoCurrencyService, CryptoCurrencyService>();
 //builder.Services.AddTransient<IExchangeService, ExchangeService>();
@@ -43,7 +43,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 //builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
 //builder.Services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-//builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
