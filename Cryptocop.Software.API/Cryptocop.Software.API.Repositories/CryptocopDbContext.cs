@@ -27,5 +27,6 @@ namespace Cryptocop.Software.API.Repositories
         public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<JwtToken> JwtTokens { get; set; } = null!;
      }
 }

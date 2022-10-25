@@ -1,6 +1,7 @@
+
 namespace Cryptocop.Software.API.Models.Dtos
 {
-    public class ShoppingCartItemDto
+    public class OrderItemDto
     {
         public int Id { get; set;}
         public string ProductIdentifier { get; set;}
