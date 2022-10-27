@@ -1,17 +1,18 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
+
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+
 using Cryptocop.Software.API.Models.Dtos;
 using Cryptocop.Software.API.Models.InputModels;
 using Cryptocop.Software.API.Repositories.Interfaces;
-using System.Linq;
 using Cryptocop.Software.API.Repositories.Entities;
-using System.Security.Cryptography;
-using System.Text;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 namespace Cryptocop.Software.API.Repositories.Implementations
 {
     public class UserRepository : IUserRepository
     {
-         private string _salt = "00209b47-08d7-475d-a0fb-20abf0872ba0";
+        private string _salt = "00209b47-08d7-475d-a0fb-20abf0872ba0";
         private readonly CryptocopDbContext _dbContext;
 
         public UserRepository(CryptocopDbContext dbContext)
@@ -20,9 +21,9 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         }
         public UserDto CreateUser(RegisterInputModel inputModel)
         {
-            if(_dbContext.Users.Where(x => x.Email == inputModel.Email).FirstOrDefault() == null)
+            if(_dbContext.Users.Where(x => x.Email == inputModel.Email).Count() > 0)
             {
-                throw new Exception();
+                throw new Exception("Email already in use.");
             }
             else{
                 var user = new User{
@@ -31,16 +32,20 @@ namespace Cryptocop.Software.API.Repositories.Implementations
                     HashedPassword = HashPassword(inputModel.Password)
 
                 };
-                var token = new JwtToken();
-                _dbContext.JwtTokens.Add(token);
                 _dbContext.Users.Add(user);
+                
+                var token = new JwtToken{
+                    Blacklisted = false
+                };
+                _dbContext.JwtTokens.Add(token);
+
                 _dbContext.SaveChanges();
+                
                 return new UserDto{
                     Id = user.Id,
                     FullName = user.FullName,
                     Email = user.Email,
                     TokenId = token.Id
-
                 };
             }  
         }
