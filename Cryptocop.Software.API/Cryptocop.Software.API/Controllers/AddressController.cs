@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Cryptocop.Software.API.Services.Interfaces;
 using Cryptocop.Software.API.Models.InputModels;
-using System;
-using Microsoft.AspNetCore.Identity;
+
 namespace Cryptocop.Software.API.Controllers
 {
     [Authorize]
