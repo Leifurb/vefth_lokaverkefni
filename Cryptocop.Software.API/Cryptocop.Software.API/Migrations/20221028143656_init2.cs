@@ -6,23 +6,21 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Cryptocop.Software.API.Migrations
 {
-    public partial class init : Migration
+    public partial class init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ShoppingCartItems",
+                name: "JwtTokens",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
-                    ShoppingCartId = table.Column<int>(type: "integer", nullable: false),
-                    ProductIdentifier = table.Column<string>(type: "text", nullable: true),
-                    Quantity = table.Column<float>(type: "real", nullable: false),
-                    UnitPrice = table.Column<float>(type: "real", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Blacklisted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCartItems", x => new { x.Id, x.ShoppingCartId });
+                    table.PrimaryKey("PK_JwtTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,17 +42,18 @@ namespace Cryptocop.Software.API.Migrations
                 name: "Address",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     StreetName = table.Column<string>(type: "text", nullable: true),
-                    HouseNumbert = table.Column<string>(type: "text", nullable: true),
+                    HouseNumber = table.Column<string>(type: "text", nullable: true),
                     ZipCode = table.Column<string>(type: "text", nullable: true),
                     Country = table.Column<string>(type: "text", nullable: true),
                     City = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => new { x.Id, x.UserId });
+                    table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Address_Users_UserId",
                         column: x => x.UserId,
@@ -96,7 +95,8 @@ namespace Cryptocop.Software.API.Migrations
                 name: "PaymentCards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     CardholderName = table.Column<string>(type: "text", nullable: true),
                     CardNumber = table.Column<string>(type: "text", nullable: true),
@@ -105,7 +105,7 @@ namespace Cryptocop.Software.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PaymentCards", x => new { x.Id, x.UserId });
+                    table.PrimaryKey("PK_PaymentCards", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PaymentCards_Users_UserId",
                         column: x => x.UserId,
@@ -137,7 +137,8 @@ namespace Cryptocop.Software.API.Migrations
                 name: "OrderItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OrderId = table.Column<int>(type: "integer", nullable: false),
                     ProductIdentifier = table.Column<string>(type: "text", nullable: true),
                     UnitPrice = table.Column<float>(type: "real", nullable: false),
@@ -145,7 +146,7 @@ namespace Cryptocop.Software.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItems", x => new { x.Id, x.OrderId });
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
@@ -155,24 +156,21 @@ namespace Cryptocop.Software.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCartShoppingCartItem",
+                name: "ShoppingCartItems",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ShoppingCartId = table.Column<int>(type: "integer", nullable: false),
-                    ShoppingCartItemsId = table.Column<int>(type: "integer", nullable: false),
-                    ShoppingCartItemsShoppingCartId = table.Column<int>(type: "integer", nullable: false)
+                    ProductIdentifier = table.Column<string>(type: "text", nullable: true),
+                    Quantity = table.Column<float>(type: "real", nullable: false),
+                    UnitPrice = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCartShoppingCartItem", x => new { x.ShoppingCartId, x.ShoppingCartItemsId, x.ShoppingCartItemsShoppingCartId });
+                    table.PrimaryKey("PK_ShoppingCartItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShoppingCartShoppingCartItem_ShoppingCartItems_ShoppingCart~",
-                        columns: x => new { x.ShoppingCartItemsId, x.ShoppingCartItemsShoppingCartId },
-                        principalTable: "ShoppingCartItems",
-                        principalColumns: new[] { "Id", "ShoppingCartId" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ShoppingCartShoppingCartItem_ShoppingCarts_ShoppingCartId",
+                        name: "FK_ShoppingCartItems_ShoppingCarts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
                         principalTable: "ShoppingCarts",
                         principalColumn: "Id",
@@ -200,14 +198,14 @@ namespace Cryptocop.Software.API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCartItems_ShoppingCartId",
+                table: "ShoppingCartItems",
+                column: "ShoppingCartId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCarts_UserId",
                 table: "ShoppingCarts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCartShoppingCartItem_ShoppingCartItemsId_ShoppingCa~",
-                table: "ShoppingCartShoppingCartItem",
-                columns: new[] { "ShoppingCartItemsId", "ShoppingCartItemsShoppingCartId" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -216,19 +214,19 @@ namespace Cryptocop.Software.API.Migrations
                 name: "Address");
 
             migrationBuilder.DropTable(
+                name: "JwtTokens");
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "PaymentCards");
 
             migrationBuilder.DropTable(
-                name: "ShoppingCartShoppingCartItem");
+                name: "ShoppingCartItems");
 
             migrationBuilder.DropTable(
                 name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "ShoppingCartItems");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Cryptocop.Software.API.Migrations
 {
     [DbContext(typeof(CryptocopDbContext))]
-    [Migration("20221024193609_init")]
-    partial class init
+    [Migration("20221028143656_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,10 +27,10 @@ namespace Cryptocop.Software.API.Migrations
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.Address", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
                         .HasColumnType("text");
@@ -38,20 +38,39 @@ namespace Cryptocop.Software.API.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
-                    b.Property<string>("HouseNumbert")
+                    b.Property<string>("HouseNumber")
                         .HasColumnType("text");
 
                     b.Property<string>("StreetName")
                         .HasColumnType("text");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("ZipCode")
                         .HasColumnType("text");
 
-                    b.HasKey("Id", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.JwtToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Blacklisted")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JwtTokens");
                 });
 
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.Order", b =>
@@ -108,7 +127,10 @@ namespace Cryptocop.Software.API.Migrations
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
@@ -122,7 +144,7 @@ namespace Cryptocop.Software.API.Migrations
                     b.Property<float>("UnitPrice")
                         .HasColumnType("real");
 
-                    b.HasKey("Id", "OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
@@ -132,10 +154,10 @@ namespace Cryptocop.Software.API.Migrations
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.PaymentCard", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CardNumber")
                         .HasColumnType("text");
@@ -146,10 +168,13 @@ namespace Cryptocop.Software.API.Migrations
                     b.Property<int>("Month")
                         .HasColumnType("integer");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Year")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -177,10 +202,10 @@ namespace Cryptocop.Software.API.Migrations
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.ShoppingCartItem", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<int>("ShoppingCartId")
-                        .HasColumnType("integer");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ProductIdentifier")
                         .HasColumnType("text");
@@ -188,10 +213,15 @@ namespace Cryptocop.Software.API.Migrations
                     b.Property<float>("Quantity")
                         .HasColumnType("real");
 
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("integer");
+
                     b.Property<float>("UnitPrice")
                         .HasColumnType("real");
 
-                    b.HasKey("Id", "ShoppingCartId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("ShoppingCartItems");
                 });
@@ -216,24 +246,6 @@ namespace Cryptocop.Software.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ShoppingCartShoppingCartItem", b =>
-                {
-                    b.Property<int>("ShoppingCartId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ShoppingCartItemsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ShoppingCartItemsShoppingCartId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ShoppingCartId", "ShoppingCartItemsId", "ShoppingCartItemsShoppingCartId");
-
-                    b.HasIndex("ShoppingCartItemsId", "ShoppingCartItemsShoppingCartId");
-
-                    b.ToTable("ShoppingCartShoppingCartItem");
                 });
 
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.Address", b =>
@@ -289,24 +301,25 @@ namespace Cryptocop.Software.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShoppingCartShoppingCartItem", b =>
+            modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.ShoppingCartItem", b =>
                 {
-                    b.HasOne("Cryptocop.Software.API.Repositories.Entities.ShoppingCart", null)
-                        .WithMany()
+                    b.HasOne("Cryptocop.Software.API.Repositories.Entities.ShoppingCart", "ShoppingCarts")
+                        .WithMany("ShoppingCartItems")
                         .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cryptocop.Software.API.Repositories.Entities.ShoppingCartItem", null)
-                        .WithMany()
-                        .HasForeignKey("ShoppingCartItemsId", "ShoppingCartItemsShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.Order", b =>
                 {
                     b.Navigation("OrderItem");
+                });
+
+            modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.ShoppingCart", b =>
+                {
+                    b.Navigation("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.User", b =>

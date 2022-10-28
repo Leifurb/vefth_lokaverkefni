@@ -22,6 +22,15 @@ builder.Services.AddDbContext<CryptocopDbContext>(options =>
     b => b.MigrationsAssembly("Cryptocop.Software.API")
     );
 });
+
+builder.Services.AddHttpClient<ICryptoCurrencyService, CryptoCurrencyService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("MessariApiBaseUrl"));
+});
+
+builder.Services.AddHttpClient<IExchangeService, ExchangeService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("MessariApiBaseUrl"));
+});
+
 builder.Services.AddAuthentication(config =>
 {
     config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,19 +47,17 @@ builder.Services.AddTransient<ITokenService>((c) =>
 
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IAddressService, AddressService>();
-//builder.Services.AddTransient<ICryptoCurrencyService, CryptoCurrencyService>();
-//builder.Services.AddTransient<IExchangeService, ExchangeService>();
 //builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 //builder.Services.AddTransient<IQueueService, QueueService>();
-//builder.Services.AddTransient<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddTransient<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
 
 
 builder.Services.AddTransient<IAddressRepository, AddressRepository>();
 //builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
-//builder.Services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddTransient<ITokenRepository, TokenRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 

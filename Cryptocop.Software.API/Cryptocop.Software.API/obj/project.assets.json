@@ -736,6 +736,9 @@
       "Cryptocop.Software.API.Models/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        },
         "compile": {
           "bin/placeholder/Cryptocop.Software.API.Models.dll": {}
         },

@@ -219,6 +219,8 @@ namespace Cryptocop.Software.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ShoppingCartId");
+
                     b.ToTable("ShoppingCartItems");
                 });
 
@@ -242,21 +244,6 @@ namespace Cryptocop.Software.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ShoppingCartShoppingCartItem", b =>
-                {
-                    b.Property<int>("ShoppingCartId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ShoppingCartItemsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ShoppingCartId", "ShoppingCartItemsId");
-
-                    b.HasIndex("ShoppingCartItemsId");
-
-                    b.ToTable("ShoppingCartShoppingCartItem");
                 });
 
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.Address", b =>
@@ -312,24 +299,25 @@ namespace Cryptocop.Software.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShoppingCartShoppingCartItem", b =>
+            modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.ShoppingCartItem", b =>
                 {
-                    b.HasOne("Cryptocop.Software.API.Repositories.Entities.ShoppingCart", null)
-                        .WithMany()
+                    b.HasOne("Cryptocop.Software.API.Repositories.Entities.ShoppingCart", "ShoppingCarts")
+                        .WithMany("ShoppingCartItems")
                         .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cryptocop.Software.API.Repositories.Entities.ShoppingCartItem", null)
-                        .WithMany()
-                        .HasForeignKey("ShoppingCartItemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.Order", b =>
                 {
                     b.Navigation("OrderItem");
+                });
+
+            modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.ShoppingCart", b =>
+                {
+                    b.Navigation("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("Cryptocop.Software.API.Repositories.Entities.User", b =>

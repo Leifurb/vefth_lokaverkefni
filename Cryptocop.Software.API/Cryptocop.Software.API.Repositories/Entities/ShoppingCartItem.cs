@@ -13,6 +13,6 @@ namespace Cryptocop.Software.API.Repositories.Entities
         public float Quantity { get; set; }
         public float UnitPrice { get; set; }
 
-        public ICollection<ShoppingCart> ShoppingCart { get; set; }
+        public ShoppingCart ShoppingCarts { get; set; }
     }
 }

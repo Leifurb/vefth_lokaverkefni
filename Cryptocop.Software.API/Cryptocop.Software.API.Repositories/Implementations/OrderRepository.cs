@@ -8,6 +8,12 @@ namespace Cryptocop.Software.API.Repositories.Implementations
 {
     public class OrderRepository : IOrderRepository
     {
+        private readonly CryptocopDbContext _dbContext;
+
+        public OrderRepository(CryptocopDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public IEnumerable<OrderDto> GetOrders(string email)
         {
             throw new NotImplementedException();

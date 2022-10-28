@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CFRCNK8n/l/wQNLkRtiJrb1CUtuW2Ysjg7+HKNYmFbywH1d7H4NlC3FZBSG1jzL4nyhkihBl02+QF1qIHKlI/A==",
+  "dgSpecHash": "kO8PvVwCiPLK9O6e554M0MHdK2R9f3zs0bZsP+ipypBhU8QnRtv1rdQ/bTy6Ik9vJ7+eoab5+uHxnXLdZTIDjg==",
   "success": true,
   "projectFilePath": "C:\\Users\\leifu\\Desktop\\vefth_lokaverkefni\\Cryptocop.Software.API\\Cryptocop.Software.API.Repositories\\Cryptocop.Software.API.Repositories.csproj",
   "expectedPackageFiles": [
@@ -19,6 +19,7 @@
     "C:\\Users\\leifu\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\leifu\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\leifu\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\leifu\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\leifu\\.nuget\\packages\\npgsql\\6.0.7\\npgsql.6.0.7.nupkg.sha512",
     "C:\\Users\\leifu\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\6.0.7\\npgsql.entityframeworkcore.postgresql.6.0.7.nupkg.sha512",
     "C:\\Users\\leifu\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",

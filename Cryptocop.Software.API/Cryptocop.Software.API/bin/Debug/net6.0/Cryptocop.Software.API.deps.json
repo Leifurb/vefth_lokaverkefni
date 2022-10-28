@@ -366,6 +366,9 @@
       "System.Text.Json/4.7.2": {},
       "System.Threading.Channels/4.7.1": {},
       "Cryptocop.Software.API.Models/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        },
         "runtime": {
           "Cryptocop.Software.API.Models.dll": {}
         }
