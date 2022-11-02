@@ -21,8 +21,9 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         public void AddPaymentCard(string email, PaymentCardInputModel paymentCard)
         {
             //checks if card already is in database and belongs to user otherwise add card to db.
-            if (_dbContext.PaymentCards.Include(u => u.User)
-                                       .FirstOrDefault(x => x.CardNumber == paymentCard.CardNumber && x.User.Email == email) != null)
+            if (_dbContext.PaymentCards.Include(u => u.User).Any(x => x.CardNumber == paymentCard.CardNumber && x.User.Email == email)){
+                
+            }else
                         {
                         var userid = _dbContext.Users.FirstOrDefault(x => x.Email == email);
                         _dbContext.PaymentCards.Add(new PaymentCard{

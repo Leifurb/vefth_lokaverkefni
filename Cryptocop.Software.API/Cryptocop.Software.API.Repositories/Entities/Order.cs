@@ -17,8 +17,8 @@ namespace Cryptocop.Software.API.Repositories.Entities
         public string MaskedCreditCard { get; set; }
         public DateTime OrderDate { get; set; }
         public float TotalPrice { get; set; }
-
         public User User { get; set;}
+        public int UserId {get; set;}
         public ICollection<OrderItem> OrderItem { get; set; }
         
     }

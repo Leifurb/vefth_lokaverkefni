@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Cryptocop.Software.API.Services.Interfaces;
 using Cryptocop.Software.API.Models.InputModels;
+
 namespace Cryptocop.Software.API.Controllers
 {
     [Authorize]
@@ -19,15 +20,16 @@ namespace Cryptocop.Software.API.Controllers
         [HttpGet]
         [Route("")]
         //Gets all items within the shopping cart for current user
-        public IActionResult GetCartItems()
-            => Ok(_shoppingcartService.GetCartItems(User.Identity.Name));
+        public IActionResult GetCartItems(){
+            return Ok(_shoppingcartService.GetCartItems(User.Identity.Name));
+        }
 
         [HttpPost]
         [Route("")]
         //Adds an item to the shopping cart for current user
-        public IActionResult AddCartItem([FromBody] ShoppingCartItemInputModel shoppingCartItemItem){
-            _shoppingcartService.AddCartItem(User.Identity.Name, shoppingCartItemItem);
-            return NoContent();
+        public async Task<IActionResult> AddCartItem([FromBody] ShoppingCartItemInputModel shoppingCartItemItem){
+            await _shoppingcartService.AddCartItem(User.Identity.Name, shoppingCartItemItem);
+            return new ObjectResult("ShoppingCartItem added to database") { StatusCode = StatusCodes.Status201Created };
         }
 
         [HttpDelete]

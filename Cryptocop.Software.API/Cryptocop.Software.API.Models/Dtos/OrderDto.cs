@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace Cryptocop.Software.API.Models.Dtos
 {
     public class OrderDto
@@ -14,7 +15,7 @@ namespace Cryptocop.Software.API.Models.Dtos
         public string CreditCard { get; set;}
         public string OrderDate { get; set;}
         public float TotalPrice { get; set;}
-        public OrderItemDto OrderItems { get; set;}
+        public List<OrderItemDto> OrderItems { get; set;}
 
     }
 }

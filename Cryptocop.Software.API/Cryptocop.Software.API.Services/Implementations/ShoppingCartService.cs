@@ -27,16 +27,18 @@ namespace Cryptocop.Software.API.Services.Implementations
 
         public async Task AddCartItem(string email, ShoppingCartItemInputModel shoppingCartItemItem)
         {
-                HttpClient client = new HttpClient();
-                string assetKey = shoppingCartItemItem.ProductIdentifier;
-                client.DefaultRequestHeaders.Add("x-messari-api-key", "7c5f8d9e-ea09-404d-abfe-f8a39bd9ee2a");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var path = "https://data.messari.io/api/v1/assets/" + shoppingCartItemItem.ProductIdentifier + "/metrics/market-data?fields=market_data/price_usd";
+            HttpClient _httpclient = new HttpClient();
+            string assetKey = shoppingCartItemItem.ProductIdentifier;
+            _httpclient.DefaultRequestHeaders.Add("x-messari-api-key", "7c5f8d9e-ea09-404d-abfe-f8a39bd9ee2a");
+            _httpclient.DefaultRequestHeaders.Accept.Clear();
+            _httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.GetAsync("https://data.messari.io/api/v1/assets/" + assetKey + "/metrics" + "?fields=id,name,slug,symbol,market_data/price_usd");
-                var json = await response.Content.ReadAsStringAsync();
-                var res = await HttpResponseMessageExtensions.DeserializeJsonToObject<CryptoCurrencyDto>(response, true);
-                _shoppingcartRepository.AddCartItem(email, shoppingCartItemItem, res.PricceInUsd);
+            HttpResponseMessage response = await _httpclient.GetAsync(path);
+            var json = await response.Content.ReadAsStringAsync();
+            var res = await HttpResponseMessageExtensions.DeserializeJsonToObject<CryptoCurrencyDto>(response, true);
+            _shoppingcartRepository.AddCartItem(email, shoppingCartItemItem, res.PriceInUsd);
+            
         }
 
         public void RemoveCartItem(string email, int id)

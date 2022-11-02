@@ -18,12 +18,6 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         }
         public void AddAddress(string email, AddressInputModel address)
         {
-            //checks if address already is in database and belongs to user otherwise add to db.
-            if (_dbContext.Address.Include(u => u.User)
-                                       .FirstOrDefault(x => x.StreetName == address.StreetName &&
-                                                            x.HouseNumber == address.HouseNumber &&
-                                                            x.User.Email == email) != null)
-            {
             var userid = _dbContext.Users.FirstOrDefault(x => x.Email == email);
             _dbContext.Address.Add(new Address{
                 UserId = userid.Id,
@@ -34,7 +28,6 @@ namespace Cryptocop.Software.API.Repositories.Implementations
                 City = address.City
             });
             _dbContext.SaveChanges();
-            }
         }
 
         public IEnumerable<AddressDto> GetAllAddresses(string email)

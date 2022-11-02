@@ -7,7 +7,7 @@ namespace Cryptocop.Software.API.Models.InputModels
         public string ProductIdentifier { get; set; }
         [Required]
         [Range(0.01, float.MaxValue)]
-        public float? Quanity { get; set; }
+        public float? Quantity { get; set; }
         
     }
 }

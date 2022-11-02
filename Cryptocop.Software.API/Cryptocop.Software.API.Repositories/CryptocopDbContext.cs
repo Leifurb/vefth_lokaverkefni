@@ -5,8 +5,14 @@ namespace Cryptocop.Software.API.Repositories
 {
     public class CryptocopDbContext : DbContext
     {
-        public CryptocopDbContext(DbContextOptions<CryptocopDbContext> options) : base(options) {}
-        
+        public CryptocopDbContext(DbContextOptions<CryptocopDbContext> options) : base(options) {} 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>()
+                .Property(b => b.OrderDate)
+                .HasDefaultValueSql("NOW()");
+        }
         public DbSet<Address> Address { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<OrderItem> OrderItems { get; set; } = null!;

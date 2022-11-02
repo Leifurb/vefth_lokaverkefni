@@ -101,7 +101,9 @@ namespace Cryptocop.Software.API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("StreetName")
                         .HasColumnType("text");
@@ -109,7 +111,7 @@ namespace Cryptocop.Software.API.Migrations
                     b.Property<float>("TotalPrice")
                         .HasColumnType("real");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ZipCode")
@@ -135,6 +137,9 @@ namespace Cryptocop.Software.API.Migrations
 
                     b.Property<string>("ProductIdentifier")
                         .HasColumnType("text");
+
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
 
                     b.Property<float>("TotalPrice")
                         .HasColumnType("real");
@@ -261,7 +266,9 @@ namespace Cryptocop.Software.API.Migrations
                 {
                     b.HasOne("Cryptocop.Software.API.Repositories.Entities.User", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
