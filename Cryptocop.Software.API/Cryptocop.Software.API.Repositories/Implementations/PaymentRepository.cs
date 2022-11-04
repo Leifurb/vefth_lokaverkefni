@@ -7,6 +7,7 @@ using Cryptocop.Software.API.Repositories.Interfaces;
 using System.Linq;
 using Cryptocop.Software.API.Repositories.Entities;
 using Microsoft.EntityFrameworkCore;
+using Cryptocop.Software.API.Models.Exceptions;
 
 namespace Cryptocop.Software.API.Repositories.Implementations
 {
@@ -20,24 +21,25 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         }
         public void AddPaymentCard(string email, PaymentCardInputModel paymentCard)
         {
+            var userid = _dbContext.Users.FirstOrDefault(x => x.Email == email);
+            if (userid == null){
+                throw new ResourceNotFoundException("User does not exist");
+            }
             //checks if card already is in database and belongs to user otherwise add card to db.
             if (_dbContext.PaymentCards.Include(u => u.User).Any(x => x.CardNumber == paymentCard.CardNumber && x.User.Email == email)){
+                throw new ResourceExistsException("payment card alredy exists");
                 
             }else
-                        {
-                        var userid = _dbContext.Users.FirstOrDefault(x => x.Email == email);
-                        _dbContext.PaymentCards.Add(new PaymentCard{
-                            UserId = userid.Id,
-                            CardholderName = paymentCard.CardholderName,
-                            CardNumber = paymentCard.CardNumber,
-                            Month = paymentCard.Month,
-                            Year = paymentCard.Year
-                        });
-                        _dbContext.SaveChanges();
-
-                        }
-
-            
+            {
+                _dbContext.PaymentCards.Add(new PaymentCard{
+                    UserId = userid.Id,
+                    CardholderName = paymentCard.CardholderName,
+                    CardNumber = paymentCard.CardNumber,
+                    Month = paymentCard.Month,
+                    Year = paymentCard.Year
+                });
+                _dbContext.SaveChanges();
+            }
         }
 
         public IEnumerable<PaymentCardDto> GetStoredPaymentCards(string email)

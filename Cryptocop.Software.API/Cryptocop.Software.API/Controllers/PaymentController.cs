@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using Cryptocop.Software.API.Services.Interfaces;
 using Cryptocop.Software.API.Models.InputModels;
+using Cryptocop.Software.API.Models.Exceptions;
 namespace Cryptocop.Software.API.Controllers
 {
     [Authorize]
@@ -21,12 +22,18 @@ namespace Cryptocop.Software.API.Controllers
         [Route("")]
         //Gets all payment cards associated with the authenticated user
         public IActionResult GetStoredPaymentCards(){
+            if (User.Identity == null){
+                throw new IdentityException();
+            }
             return Ok(_paymentService.GetStoredPaymentCards(User.Identity.Name));
         }
         [HttpPost]
         [Route("")]
         //Adds a new payment card associated with the authenticated user
         public IActionResult AddNewPaymentCard([FromBody] PaymentCardInputModel newcard){
+            if (User.Identity == null){
+                throw new IdentityException();
+            }
             _paymentService.AddPaymentCard(User.Identity.Name, newcard);
             return NoContent();
         }

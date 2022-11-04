@@ -37,8 +37,8 @@ namespace Cryptocop.Software.API.Controllers
         public IActionResult Register([FromBody] RegisterInputModel registeruser)
         {
             var user = _accountService.CreateUser(registeruser);
-            if (user == null) { return Unauthorized(); }
-            return Ok(_tokenService.GenerateJwtToken(user));
+            if (user == null) { return Conflict(); }
+            return Ok();
         }
 
         [HttpGet]
@@ -46,7 +46,7 @@ namespace Cryptocop.Software.API.Controllers
         public IActionResult Signout()
         {
             var a = User.Claims.FirstOrDefault(c => c.Type == "tokenId");
-            if (a == null) { return StatusCode(400);} //kikja kannski á enn ætti ekki að gerast
+            if (a == null) { return NoContent();} //kikja kannski á enn ætti ekki að gerast
             int tokenId = int.Parse(a.Value);
             _accountService.Logout(tokenId);
             return NoContent();

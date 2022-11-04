@@ -6,7 +6,7 @@ using Cryptocop.Software.API.Repositories.Interfaces;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Cryptocop.Software.API.Repositories.Entities;
-using System;
+using Cryptocop.Software.API.Models.Exceptions;
 namespace Cryptocop.Software.API.Repositories.Implementations
 {
     public class ShoppingCartRepository : IShoppingCartRepository
@@ -20,7 +20,7 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         public IEnumerable<ShoppingCartItemDto> GetCartItems(string email)
         {
             var shoppingcart = _dbContext.ShoppingCarts.Include(a => a.User).FirstOrDefault(x => x.User.Email == email);
-            if (shoppingcart == null){return null;}
+            if (shoppingcart == null){throw new ResourceNotFoundException("shopping cart not found");}
             var a = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCartId == shoppingcart.Id).Select(s => new ShoppingCartItemDto{
                 Id = shoppingcart.Id,
                 ProductIdentifier = s.ProductIdentifier,
@@ -38,6 +38,7 @@ namespace Cryptocop.Software.API.Repositories.Implementations
                 a = (float) 0;
             }
            var userid = _dbContext.Users.FirstOrDefault(x => x.Email == email);
+           if (userid == null){throw new ResourceNotFoundException("user not found");}
             var shoppingcart = _dbContext.ShoppingCarts.FirstOrDefault(s => s.UserId == userid.Id);
             if(shoppingcart == null) 
             {
@@ -67,12 +68,23 @@ namespace Cryptocop.Software.API.Repositories.Implementations
                     _dbContext.ShoppingCartItems.Remove(entity);
                     _dbContext.SaveChanges();
                 }
+                throw new ResourceNotFoundException("shopping cart item not found");
             }
+            throw new ResourceNotFoundException("shopping cart not found");
         }
 
         public void UpdateCartItemQuantity(string email, int id, float quantity)
         {
-            throw new System.NotImplementedException();
+            var cart = _dbContext.ShoppingCarts.FirstOrDefault(u => u.User.Email == email);
+            if(cart == null) {
+                throw new ResourceNotFoundException("Shopping cart not found");
+            }
+            var item = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCarts == cart && i.Id == id).FirstOrDefault();
+            if(item == null) {
+                throw new ResourceNotFoundException($"Shopping item with id: {id} was not found");
+            }
+            item.Quantity = (float) quantity;
+            _dbContext.SaveChanges();
         }
 
         public void ClearCart(string email)
@@ -85,6 +97,7 @@ namespace Cryptocop.Software.API.Repositories.Implementations
                 _dbContext.ShoppingCartItems.RemoveRange(entity);
                 _dbContext.SaveChanges();
                 }
+            throw new ResourceNotFoundException("Shopping cart not found");
         }
         public void DeleteCart(string email){
             var shoppingCart = _dbContext.ShoppingCarts.Include(s => s.User).FirstOrDefault(u => u.User.Email == email);
@@ -95,6 +108,8 @@ namespace Cryptocop.Software.API.Repositories.Implementations
                 _dbContext.ShoppingCartItems.Remove(entity);}
                 _dbContext.SaveChanges();
                 }
+                throw new ResourceExistsException("There are still items in chart");
+            throw new ResourceNotFoundException("Shopping cart not found");
         }
 
     }

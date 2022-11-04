@@ -17,7 +17,7 @@ namespace Cryptocop.Software.API.Services.Implementations
 
         public QueueService(IConfiguration configuration) 
         {
-            var host = "localhost";
+            var host = "rabbitmq";
             _exchange = "order_exchange";
 
             var factory = new ConnectionFactory() { HostName = host };

@@ -9,6 +9,7 @@ using Cryptocop.Software.API.Models.InputModels;
 using Cryptocop.Software.API.Repositories.Interfaces;
 using Cryptocop.Software.API.Repositories.Entities;
 using Cryptocop.Software.API.Repositories.Helpers;
+using Cryptocop.Software.API.Models.Exceptions;
 namespace Cryptocop.Software.API.Repositories.Implementations
 {
     public class UserRepository : IUserRepository
@@ -24,7 +25,7 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         {
             if(_dbContext.Users.Where(x => x.Email == inputModel.Email).Count() > 0)
             {
-                throw new Exception("Email already in use.");
+                throw new ResourceExistsException("User with email alredy exists");
             }
             else{
                 var user = new User{
@@ -54,22 +55,21 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         public UserDto AuthenticateUser(LoginInputModel loginInputModel)
         {
             var user = _dbContext.Users.FirstOrDefault(x => x.Email == loginInputModel.Email);
-            if (user == null){return null;}
+            if (user == null){ throw new NotAuthorized("wrong email");}
 
             if (user.HashedPassword == HashingHelper.HashPassword(loginInputModel.Password)){
-                var token = new JwtToken();
-                _dbContext.JwtTokens.Add(token);
-                _dbContext.SaveChanges();
-                 return new UserDto{
-                    Id = user.Id,
-                    FullName = user.FullName,
-                    Email = user.Email,
-                    TokenId = token.Id
+                throw new NotAuthorized("wrong password");
 
-                };
-            }else{
-                return null; //wrong password must remember to add custom error
             }
+            var token = new JwtToken();
+            _dbContext.JwtTokens.Add(token);
+            _dbContext.SaveChanges();
+                return new UserDto{
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                TokenId = token.Id
+                };
         }
         
     }

@@ -8,7 +8,7 @@ using Cryptocop.Software.API.Repositories.Interfaces;
 using Cryptocop.Software.API.Repositories.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Cryptocop.Software.API.Middlewares;
-
+using Cryptocop.Software.API.ExceptionHandlerExtensions;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -82,8 +82,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
+app.UseGlobalExceptionHandler();
+app.UseRouting();
 
 
 app.UseAuthentication();

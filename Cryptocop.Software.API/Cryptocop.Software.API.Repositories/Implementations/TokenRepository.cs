@@ -4,6 +4,8 @@ using Cryptocop.Software.API.Repositories.Entities;
 
 using System.Linq;
 
+using Cryptocop.Software.API.Models.Exceptions;
+
 namespace Cryptocop.Software.API.Repositories.Implementations
 {
     public class TokenRepository : ITokenRepository
@@ -35,7 +37,7 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         public void VoidToken(int tokenId)
         {
             var token = _dbContext.JwtTokens.FirstOrDefault(t => t.Id == tokenId);
-            if (token == null) { return; }
+            if (token == null) { throw new ResourceNotFoundException("token not found");}
             token.Blacklisted = true;
             _dbContext.SaveChanges();
         }

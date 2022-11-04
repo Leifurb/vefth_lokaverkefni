@@ -5,6 +5,7 @@ using Cryptocop.Software.API.Repositories.Interfaces;
 using Cryptocop.Software.API.Repositories.Entities;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Cryptocop.Software.API.Models.Exceptions;
 
 namespace Cryptocop.Software.API.Repositories.Implementations
 {
@@ -19,6 +20,9 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         public void AddAddress(string email, AddressInputModel address)
         {
             var userid = _dbContext.Users.FirstOrDefault(x => x.Email == email);
+            if (userid == null){
+                throw new ResourceNotFoundException("User does not Exist with this email");
+            }
             _dbContext.Address.Add(new Address{
                 UserId = userid.Id,
                 StreetName = address.StreetName,
@@ -50,6 +54,7 @@ namespace Cryptocop.Software.API.Repositories.Implementations
                 _dbContext.Address.Remove(entity);
                 _dbContext.SaveChanges();
             }
+            throw new ResourceNotFoundException("Address not found");
         }
     }
 }

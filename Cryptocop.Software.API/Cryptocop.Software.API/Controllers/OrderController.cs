@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using Cryptocop.Software.API.Services.Interfaces;
 using Cryptocop.Software.API.Models.InputModels;
+using Cryptocop.Software.API.Models.Exceptions;
 
 namespace Cryptocop.Software.API.Controllers
 {
@@ -22,12 +23,18 @@ namespace Cryptocop.Software.API.Controllers
         [Route("")]
         //Gets all orders associated with the authenticated user
         public IActionResult GetOrders(){
+            if (User.Identity == null){
+                throw new IdentityException();
+            }
             return Ok(_orderService.GetOrders(User.Identity.Name));
         }
         [HttpPost]
         [Route("")]
         //Adds a new order associated with the authenticated user
         public IActionResult CreateNewOrder([FromBody]  OrderInputModel order){
+            if (User.Identity == null){
+                throw new IdentityException();
+            }
             _orderService.CreateNewOrder(User.Identity.Name, order);
             return NoContent();
         }

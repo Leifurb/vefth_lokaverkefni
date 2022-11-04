@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using Cryptocop.Software.API.Models.Dtos;
 using Cryptocop.Software.API.Models.InputModels;
 using Cryptocop.Software.API.Repositories.Interfaces;
-
+using Cryptocop.Software.API.Models.Exceptions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Cryptocop.Software.API.Repositories.Entities;
-using System;
-using System.Globalization;
 using Cryptocop.Software.API.Repositories.Helpers;
 
 namespace Cryptocop.Software.API.Repositories.Implementations
@@ -32,26 +30,31 @@ namespace Cryptocop.Software.API.Repositories.Implementations
         public IEnumerable<OrderDto> GetOrders(string email)
         {
             var userid = _dbContext.Users.Where(u => u.Email == email).Select(b => b.Id);
-            var orders = _dbContext.Orders.Include(m => m.OrderItem)
-                                            .Where(a => a.Email == email)
-                                            .Select(b => new OrderDto{
-                                                    Id = b.Id,
-                                                    Email = b.Email,
-                                                    FullName = b.FullName,
-                                                    StreetName = b.StreetName,
-                                                    HouseNumber = b.HouseNumber,
-                                                    ZipCode = b.ZipCode,
-                                                    Country = b.Country,
-                                                    City = b.City,
-                                                    CardholderName = b.CardholderName,
-                                                    CreditCard = b.MaskedCreditCard,
-                                                    OrderDate = b.OrderDate.ToString("dd'.'MM'.'yyyy"),
-                                                    TotalPrice = b.TotalPrice,
-                                                    OrderItems = null}).ToList();
-
-            foreach(var item in orders){
-                item.OrderItems =  GetAllOrderItemsHelper(item.Id);
-            }
+            if (userid == null){throw new ResourceExistsException("User does not exist");}
+            var orders = _dbContext.Orders
+                                .Include(m => m.OrderItem)
+                                .Where(a => a.Email == email)
+                                .Select(b => new OrderDto{
+                                        Id = b.Id,
+                                        Email = b.Email,
+                                        FullName = b.FullName,
+                                        StreetName = b.StreetName,
+                                        HouseNumber = b.HouseNumber,
+                                        ZipCode = b.ZipCode,
+                                        Country = b.Country,
+                                        City = b.City,
+                                        CardholderName = b.CardholderName,
+                                        CreditCard = b.MaskedCreditCard,
+                                        OrderDate = b.OrderDate.ToString("dd'.'MM'.'yyyy"),
+                                        TotalPrice = b.TotalPrice,
+                                        OrderItems = _dbContext.OrderItems
+                                                                .Where(i => b.Id == i.OrderId)
+                                                                .Select(n => new OrderItemDto{
+                                                                        Id = n.Id,
+                                                                        ProductIdentifier = n.ProductIdentifier,
+                                                                        Quantity = n.Quantity,
+                                                                        UnitPrice = n.UnitPrice,
+                                                                        TotalPrice = n.TotalPrice}).ToList()});
             return orders;
         }
 
@@ -60,8 +63,20 @@ namespace Cryptocop.Software.API.Repositories.Implementations
             var user = _dbContext.Users.FirstOrDefault(x => x.Email == email);
             var address = _dbContext.Address.FirstOrDefault(x => x.Id == order.AddressId);
             var payment = _dbContext.PaymentCards.FirstOrDefault(x => x.Id == order.PaymentCardId);
-            if (user==null || address==null || payment == null){return null;}
             var shoppingcart = _dbContext.ShoppingCarts.FirstOrDefault(x => x.UserId == user.Id);
+            if (user==null){
+                throw new ResourceNotFoundException("User does not exist");
+            }
+            if (address==null){
+                throw new ResourceNotFoundException("Address not found");
+            }
+            if (address==null){
+                throw new ResourceNotFoundException("Payment card not found");
+            } 
+            
+            if ( shoppingcart == null){
+                throw new ResourceNotFoundException("Shopping cart not found");
+            }
             var shoppingCartItems = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCartId == shoppingcart.Id);
             float total_in_cart = 0;
             foreach(var i in shoppingCartItems){
