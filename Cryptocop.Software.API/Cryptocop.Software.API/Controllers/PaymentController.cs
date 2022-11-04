@@ -31,6 +31,9 @@ namespace Cryptocop.Software.API.Controllers
         [Route("")]
         //Adds a new payment card associated with the authenticated user
         public IActionResult AddNewPaymentCard([FromBody] PaymentCardInputModel newcard){
+            if (!ModelState.IsValid){
+                throw new ModelFormatException("Payment card is in a wrong format");
+            }
             if (User.Identity == null){
                 throw new IdentityException();
             }

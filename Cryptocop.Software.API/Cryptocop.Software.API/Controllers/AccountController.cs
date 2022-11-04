@@ -3,7 +3,7 @@ using Cryptocop.Software.API.Services.Interfaces;
 using Cryptocop.Software.API.Models.InputModels;
 using Microsoft.AspNetCore.Authorization;
 
-using System.Linq;
+using Cryptocop.Software.API.Models.Exceptions;
 
 namespace Cryptocop.Software.API.Controllers
 {
@@ -26,6 +26,10 @@ namespace Cryptocop.Software.API.Controllers
         [Route("signin")]
         public IActionResult SignIn([FromBody] LoginInputModel login)
         {
+
+            if (!ModelState.IsValid){
+                throw new ModelFormatException("login is in a wrong format");
+            }
             var user = _accountService.AuthenticateUser(login);
             if (user == null) { return Unauthorized(); }
             return Ok(_tokenService.GenerateJwtToken(user));
@@ -36,9 +40,12 @@ namespace Cryptocop.Software.API.Controllers
         [Route("register")]
         public IActionResult Register([FromBody] RegisterInputModel registeruser)
         {
+            if (!ModelState.IsValid){
+                throw new ModelFormatException("Register is in a wrong format");
+            }
             var user = _accountService.CreateUser(registeruser);
             if (user == null) { return Conflict(); }
-            return Ok();
+            return Ok("User Created");
         }
 
         [HttpGet]

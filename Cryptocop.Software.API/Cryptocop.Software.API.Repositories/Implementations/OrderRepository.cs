@@ -70,11 +70,11 @@ namespace Cryptocop.Software.API.Repositories.Implementations
             if (address==null){
                 throw new ResourceNotFoundException("Address not found");
             }
-            if (address==null){
+            if (payment==null){
                 throw new ResourceNotFoundException("Payment card not found");
             } 
             
-            if ( shoppingcart == null){
+            if (shoppingcart == null){
                 throw new ResourceNotFoundException("Shopping cart not found");
             }
             var shoppingCartItems = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCartId == shoppingcart.Id);

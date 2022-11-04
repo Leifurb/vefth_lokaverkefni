@@ -28,7 +28,7 @@ namespace Cryptocop.Software.API.Services.Implementations
                 _httpClient.DefaultRequestHeaders.Accept.Clear();
                 _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await _httpClient.GetAsync("v2/assets"+ "?pageNumber="+pageNumber+"&limit="+ limit +"?fields=id,name,slug,symbol,market_data/price_usd");
+                HttpResponseMessage response = await _httpClient.GetAsync("v2/assets"+ "?pageNumber="+pageNumber+"&limit="+ limit +"&fields=id,symbol,name,slug,metrics/market_data/price_usd,profile/general/overview/project_details");
                 var res = await HttpResponseMessageExtensions.DeserializeJsonToList<CryptoCurrencyDto>(response, true);
                 List<CryptoCurrencyDto> selectedCurrency = new List<CryptoCurrencyDto>();
                 var currencies = new List<string>() { "ETH", "USDT", "BTC", "XMR" };

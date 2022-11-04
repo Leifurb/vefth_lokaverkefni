@@ -32,6 +32,9 @@ namespace Cryptocop.Software.API.Controllers
         [Route("")]
         //Adds a new order associated with the authenticated user
         public IActionResult CreateNewOrder([FromBody]  OrderInputModel order){
+            if (!ModelState.IsValid){
+                throw new ModelFormatException("Order model is in a wrong format");
+            }
             if (User.Identity == null){
                 throw new IdentityException();
             }

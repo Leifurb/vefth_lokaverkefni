@@ -32,6 +32,9 @@ namespace Cryptocop.Software.API.Controllers
         [Route("")]
         //Adds an item to the shopping cart for current user
         public async Task<IActionResult> AddCartItem([FromBody] ShoppingCartItemInputModel shoppingCartItemItem){
+            if (!ModelState.IsValid){
+                throw new ModelFormatException("Shopping cart item is in a wrong format");
+            }
             if (User.Identity == null){
                 throw new IdentityException();
             }
@@ -53,10 +56,14 @@ namespace Cryptocop.Software.API.Controllers
         [HttpPatch]
         [Route("{id}")]
         // Updates the quantity for a shopping cart item for current user
-        public IActionResult UpdateCartItemQuantity( int id, [FromBody] float quantity){
+        public IActionResult UpdateCartItemQuantity([FromBody] ShoppingCartItemInputModel item, int id){
             if (User.Identity == null){
                 throw new IdentityException();
             }
+            if (item.Quantity == null){
+                throw new ModelFormatException();
+            }
+            float quantity = (float) item.Quantity;
             _shoppingcartService.UpdateCartItemQuantity(User.Identity.Name, id, quantity);
             return NoContent();
         }

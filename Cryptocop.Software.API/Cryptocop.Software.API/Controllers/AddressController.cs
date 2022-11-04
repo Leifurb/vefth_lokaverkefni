@@ -31,6 +31,9 @@ namespace Cryptocop.Software.API.Controllers
         [Route("")]
         //Adds a new address associated with authenticated user, see
         public IActionResult AddAddress([FromBody] AddressInputModel address){
+            if (!ModelState.IsValid){
+                throw new ModelFormatException("Adddress model is in a wrong format");
+            }
             if (User.Identity == null){
                 throw new IdentityException();
             }

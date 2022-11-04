@@ -57,7 +57,7 @@ namespace Cryptocop.Software.API.Repositories.Implementations
             var user = _dbContext.Users.FirstOrDefault(x => x.Email == loginInputModel.Email);
             if (user == null){ throw new NotAuthorized("wrong email");}
 
-            if (user.HashedPassword == HashingHelper.HashPassword(loginInputModel.Password)){
+            if (user.HashedPassword != HashingHelper.HashPassword(loginInputModel.Password)){
                 throw new NotAuthorized("wrong password");
 
             }
